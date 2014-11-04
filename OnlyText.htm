@@ -2,6 +2,21 @@
 <html>
 <head>
 <title>Only Text - Editor</title>
+<link href='http://fonts.googleapis.com/css?family=Fira+Mono' rel='stylesheet' type='text/css' />
+<style>
+textarea
+{
+font-family:'Fira Mono', 'Consolas', 'Courier New', 'Courier',monospace;
+padding-right:2vw; 
+padding-left:2vw;
+padding-top:2vh; 
+border:none;
+overflow:auto;
+width:96vw;
+height:98vh;
+
+}
+</style>
 <script>
 function File()
 {
@@ -191,7 +206,7 @@ function HandleKeyBoardShortcut(e) {
 </head>
 <body style="overflow:hidden;margin:0;padding:0;" onkeyup="javascript:HandleKeyBoardShortcut(event)" onload="LoadData()">
     <form onsubmit="return false;">
-        <textarea id="onlytext" style="padding-right:2vw; padding-left:2vw;padding-top:2vh; border:none;overflow:auto;width:96vw;height:98vh;font-size:12pt;font-family:Consolas,Courier New, Courier, monospace;">
+        <textarea id="onlytext" style="font-size:12pt;">
             Start typing your content here... Once done press ctrl+b to toggle to html.
         </textarea>
     </form>
