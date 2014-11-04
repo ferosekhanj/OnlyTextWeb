@@ -7,12 +7,8 @@
 textarea
 {
 font-family:'Fira Mono', 'Consolas', 'Courier New', 'Courier',monospace;
-padding-right:2vw; 
-padding-left:2vw;
-padding-top:2vh; 
 border:none;
 overflow:auto;
-width:96vw;
 height:98vh;
 
 }
@@ -179,15 +175,19 @@ var currentContent = null;
 
 function HandleKeyBoardShortcut(e) {
 
-    if (e.ctrlKey &&  e.keyCode == 113) { // ctrl F2
+    if (e.ctrlKey &&  (e.keyCode == 113 ||e.keyCode == 114)) { // ctrl F2/F3
         var fs = document.getElementById("onlytext").style.fontSize;
         fs = parseInt(fs);
-        document.getElementById("onlytext").style.fontSize = (fs+1)+"pt";
-    }else if (e.ctrlKey && e.keyCode == 114) { // ctrl F3
-        var fs = document.getElementById("onlytext").style.fontSize;
+        document.getElementById("onlytext").style.fontSize = (fs+((e.keyCode==113)?1:-1))+"pt";
+    }else if (e.ctrlKey && (e.keyCode == 117||e.keyCode == 118)) { // ctrl F6/F7
+        var fs = document.getElementById("onlytext").style.paddingLeft;
         fs = parseInt(fs);
-        document.getElementById("onlytext").style.fontSize = (fs - 1) + "pt";
-    }else if (e.ctrlKey && e.keyCode == 66) { // ctrl B
+		var s = document.getElementById("onlytext").style;
+		var padding = fs+((e.keyCode==117)?1:-1);
+		s.paddingLeft = s.paddingRight = padding + "vw";
+		s.width = (100 - padding * 2) +"vw";
+    }
+	else if (e.ctrlKey && e.keyCode == 66) { // ctrl B
         var fs = document.getElementById("onlytext").style.display;
         if (currentContent == null) {
             currentContent = document.forms[0].onlytext.value;
@@ -206,7 +206,7 @@ function HandleKeyBoardShortcut(e) {
 </head>
 <body style="overflow:hidden;margin:0;padding:0;" onkeyup="javascript:HandleKeyBoardShortcut(event)" onload="LoadData()">
     <form onsubmit="return false;">
-        <textarea id="onlytext" style="font-size:12pt;">
+        <textarea id="onlytext" style="font-size:12pt;width:96vw;padding-top:2vw;padding-right:2vw; padding-left:2vw;">
             Start typing your content here... Once done press ctrl+b to toggle to html.
         </textarea>
     </form>
