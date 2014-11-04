@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Only text - Editor</title>
+<script>
+function File()
+{
+    this.content = new String();
+}
+File.prototype.WriteLine = function(s){this.content += (s+"\n");}
+
+function WriteParagraph(token,file)
+{
+	file.WriteLine("<p>" + htmlescape(token) + "</p>");
+	return true;
+}
+
+var isPreformatted = false;
+function FindPreformatted(token, file)
+{
+	if(isPreformatted)
+	    file.WriteLine(htmlescape(token));
+	return isPreformatted;
+}
+
+function FindOneLiners(pp,file)
+{
+	var txt = new Array("{{","}}","---" );
+	var tag = new Array ( "<pre>", "</pre>", "<hr/>" );
+
+	var p = pp.trim();
+	for (var i = 0; i < txt.length; i++)
+	{
+		if ( p == txt[i] )
+		{
+			if(i==0)
+			{
+				isPreformatted = true;
+			}
+			if (i==1)
+			{
+				isPreformatted = false;
+			}
+			file.WriteLine(tag[i]);
+			return true;
+		}
+	}
+	return false;
+}
+
+function FindHeading(token,file)
+{
+    token = token.trim();
+    if (token.length > 0 && token[0] != '!')
+    {
+        return false;
+    }
+
+	var i=0;
+	while (i < 6 && i < token.length && token[i] == '!')
+	{
+		i++;
+	}
+
+	file.WriteLine("<h" + i + ">" + htmlescape(token.substring(i)) + "</h" + i + ">");
+
+	return true;
+}
+
+var myListLevel = 0;
+var padding = "";
+function FindList(token,file)
+{
+    token = token.trim();
+	if (token.length > 0 && token[0] != '#')
+	{
+		while(myListLevel > 0)
+		{
+			file.WriteLine(padding+"</li>");
+			padding = padding.substr(0,padding.length -2);
+			file.WriteLine(padding+"</ul>");
+			myListLevel--;
+		}
+		return false;
+	}
+
+	var i = 0;
+	while (i < 6 && i < token.length && token[i] == '#')
+	{
+		i++;
+	}
+
+	if (i == myListLevel)
+	{
+		file.WriteLine(padding+"</li>");
+		file.WriteLine(padding+"<li>"+ htmlescape(token.substring(i)) );
+	}
+	else
+	{
+		if(i>myListLevel)
+		{
+			myListLevel++;
+			file.WriteLine(padding + "<ul>" + padding);
+			padding += ("\t");
+			file.WriteLine(padding + "<li>" + htmlescape(token.substring(i)));
+		}
+		else
+		{
+			myListLevel--;
+			file.WriteLine(padding+"</li>");
+			padding = padding.substring(0,padding.length-2);
+			file.WriteLine(padding +"</ul>");
+			file.WriteLine(padding+"</li>");
+			file.WriteLine(padding+"<li>"+htmlescape(token.substring(i)));
+		}
+	}
+	return true;
+}
+
+function ConvertContent()
+{
+    var aText = document.forms[0].onlytext.value;
+    var tokens = aText.split("\n");
+    var processors = new Array( FindOneLiners , FindPreformatted, FindList, FindHeading, WriteParagraph );
+    var file = new File();
+    for (var i = 0; i < tokens.length;i++)
+    {
+        var token = tokens[i];
+        if (token.trim().length == 0 && !isPreformatted)
+            continue;
+
+        for (var j = 0; j < processors.length; j++)
+        {
+            if (processors[j](token, file))
+                break;
+        }
+        
+    }
+    return file.content;
+}
+function LoadData() {
+    if (typeof (Storage) !== "undefined") {
+        document.forms[0].onlytext.value = localStorage.getItem("onlytext.post");
+    }
+    setTimeout("AutoSave()", 1000);
+}
+function AutoSave()
+{
+    SaveData();
+    setTimeout("AutoSave()", 1000);
+}
+function SaveData()
+{
+    if (typeof (Storage) !== "undefined") {
+        localStorage.setItem("onlytext.post", document.forms[0].onlytext.value);
+    }
+}
+function htmlescape(str) {
+    var div = document.createElement('div');
+    div.appendChild(document.createTextNode(str));
+    return div.innerHTML; // '&apos;' is not valid HTML 4;
+}
+var currentContent = null;
+
+function doc_keyUp(e) {
+
+    if (e.ctrlKey &&  e.keyCode == 113) { // ctrl F2
+        var fs = document.getElementById("onlytext").style.fontSize;
+        fs = parseInt(fs);
+        document.getElementById("onlytext").style.fontSize = (fs+1)+"pt";
+    }else if (e.ctrlKey && e.keyCode == 114) { // ctrl F3
+        var fs = document.getElementById("onlytext").style.fontSize;
+        fs = parseInt(fs);
+        document.getElementById("onlytext").style.fontSize = (fs - 1) + "pt";
+    }else if (e.ctrlKey && e.keyCode == 66) { // ctrl B
+        var fs = document.getElementById("onlytext").style.display;
+        if (currentContent == null) {
+            currentContent = document.forms[0].onlytext.value;
+            document.forms[0].onlytext.value = ConvertContent();
+            document.getElementById("onlytext").readOnly = true;
+            document.getElementById("onlytext").style.backgroundColor = 'lightGray';
+        } else {
+            document.forms[0].onlytext.value = currentContent;
+            currentContent = null;
+            document.getElementById("onlytext").readOnly = false;
+            document.getElementById("onlytext").style.backgroundColor = 'white';
+        }
+    } else if (e.ctrlKey && e.keyCode == 83) { // ctrl S
+        SaveData();
+    }
+}
+</script>
+</head>
+<body style="overflow:hidden;margin:0;padding:0;" onkeyup="javascript:doc_keyUp(event)" onload="LoadData()">
+    <form onsubmit="return false;">
+        <textarea id="onlytext" style="padding-right:2vw; padding-left:2vw;padding-top:2vh; border:none;overflow:auto;width:96vw;height:98vh;font-size:12pt;font-family:Consolas,Courier New, Courier, monospace;"></textarea>
+    </form>
+</body>
+</html>
