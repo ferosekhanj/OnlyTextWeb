@@ -11,7 +11,7 @@ File.prototype.WriteLine = function(s){this.content += (s+"\n");}
 
 function WriteParagraph(token,file)
 {
-	file.WriteLine("<p>" + htmlescape(token) + "</p>");
+	file.WriteLine("<p>" + HtmlEscape(token) + "</p>");
 	return true;
 }
 
@@ -19,7 +19,7 @@ var isPreformatted = false;
 function FindPreformatted(token, file)
 {
 	if(isPreformatted)
-	    file.WriteLine(htmlescape(token));
+	    file.WriteLine(HtmlEscape(token));
 	return isPreformatted;
 }
 
@@ -62,7 +62,7 @@ function FindHeading(token,file)
 		i++;
 	}
 
-	file.WriteLine("<h" + i + ">" + htmlescape(token.substring(i)) + "</h" + i + ">");
+	file.WriteLine("<h" + i + ">" + HtmlEscape(token.substring(i)) + "</h" + i + ">");
 
 	return true;
 }
@@ -93,7 +93,7 @@ function FindList(token,file)
 	if (i == myListLevel)
 	{
 		file.WriteLine(padding+"</li>");
-		file.WriteLine(padding+"<li>"+ htmlescape(token.substring(i)) );
+		file.WriteLine(padding+"<li>"+ HtmlEscape(token.substring(i)) );
 	}
 	else
 	{
@@ -102,7 +102,7 @@ function FindList(token,file)
 			myListLevel++;
 			file.WriteLine(padding + "<ul>" + padding);
 			padding += ("\t");
-			file.WriteLine(padding + "<li>" + htmlescape(token.substring(i)));
+			file.WriteLine(padding + "<li>" + HtmlEscape(token.substring(i)));
 		}
 		else
 		{
@@ -111,7 +111,7 @@ function FindList(token,file)
 			padding = padding.substring(0,padding.length-2);
 			file.WriteLine(padding +"</ul>");
 			file.WriteLine(padding+"</li>");
-			file.WriteLine(padding+"<li>"+htmlescape(token.substring(i)));
+			file.WriteLine(padding+"<li>"+HtmlEscape(token.substring(i)));
 		}
 	}
 	return true;
@@ -155,14 +155,14 @@ function SaveData()
         localStorage.setItem("onlytext.post", document.forms[0].onlytext.value);
     }
 }
-function htmlescape(str) {
+function HtmlEscape(str) {
     var div = document.createElement('div');
     div.appendChild(document.createTextNode(str));
-    return div.innerHTML; // '&apos;' is not valid HTML 4;
+    return div.innerHTML; 
 }
 var currentContent = null;
 
-function doc_keyUp(e) {
+function HandleKeyBoardShortcut(e) {
 
     if (e.ctrlKey &&  e.keyCode == 113) { // ctrl F2
         var fs = document.getElementById("onlytext").style.fontSize;
@@ -185,15 +185,15 @@ function doc_keyUp(e) {
             document.getElementById("onlytext").readOnly = false;
             document.getElementById("onlytext").style.backgroundColor = 'white';
         }
-    } else if (e.ctrlKey && e.keyCode == 83) { // ctrl S
-        SaveData();
     }
 }
 </script>
 </head>
-<body style="overflow:hidden;margin:0;padding:0;" onkeyup="javascript:doc_keyUp(event)" onload="LoadData()">
+<body style="overflow:hidden;margin:0;padding:0;" onkeyup="javascript:HandleKeyBoardShortcut(event)" onload="LoadData()">
     <form onsubmit="return false;">
-        <textarea id="onlytext" style="padding-right:2vw; padding-left:2vw;padding-top:2vh; border:none;overflow:auto;width:96vw;height:98vh;font-size:12pt;font-family:Consolas,Courier New, Courier, monospace;"></textarea>
+        <textarea id="onlytext" style="padding-right:2vw; padding-left:2vw;padding-top:2vh; border:none;overflow:auto;width:96vw;height:98vh;font-size:12pt;font-family:Consolas,Courier New, Courier, monospace;">
+            Start typing your content here...
+        </textarea>
     </form>
 </body>
 </html>
