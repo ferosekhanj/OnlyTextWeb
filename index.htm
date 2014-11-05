@@ -1,84 +1,124 @@
-<html>
-<head>
-<title>Only Text Editor</title>
-<link href='http://fonts.googleapis.com/css?family=Droid+Serif|Open+Sans' rel='stylesheet' type='text/css'/>
-<style>
-body
-{
-font-family: 'Open Sans', sans-serif;
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Only Text Editor</title>
+	<link href='http://fonts.googleapis.com/css?family=Droid+Serif|Open+Sans' rel='stylesheet' type='text/css'/>
+
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap-theme.min.css">
+
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
+	<style>
+	@import url(http://weloveiconfonts.com/api/?family=fontawesome);
+
+/* fontawesome */
+[class*="fontawesome-"]:before {
+  font-family: 'FontAwesome', sans-serif;
 }
-h1,h2,h3,h4,h5,h6
-{
-font-family: 'Droid Serif', serif;
-}
-</style>
+		body
+		{
+			font-family: 'Open Sans', sans-serif;
+			/* for jumbotron Move down content because we have a fixed navbar that is 50px tall*/
+			padding-top: 50px;
+			padding-bottom: 20px;
+		}
+		h1,h2,h3,h4,h5,h6
+		{
+			font-family: 'Droid Serif', serif;
+		}
+		h2{font-size:xx-large;}
+	</style>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->	
 </head>
 <body>
-<h1>Only Text Editor</h1>
-<hr/>
-<p>
-This is a simple distraction free text editor that lets you concentrate only on your content. It runs inside your web browser. 
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="http://onlytext.azurewebsites.net/">Only Text Editor</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron">
+      <div class="container">
+        <h1>Welcome!!</h1>
+        <p>This is a simple distraction free text editor that lets you concentrate only on your content. It runs inside your web browser. 
 Your content is auto saved to your browser's local storage. You format your text easily and the editor takes care of converting it to html. 
 See the formatting section below. Start typing your content in full screen with the basic formatting and once done just toggle the html
-preview. Copy and paste the html content to your target location (blog, html file, sharepoint etc.,).
-</p>
+preview. Copy and paste the html content to your target location (blog, html file, sharepoint etc.,).</p>
+        <p><a class="btn btn-primary btn-lg" href="./onlytext.htm" role="button">Open Only Text editor &raquo;</a></p>
+      </div>
+    </div>
 
-<a href="./onlytext.htm">Click here to open only text editor</a>
+    <div class="container">
+      <!-- Example row of columns -->
+      <div class="row">
+        <div class="col-md-4">
+          <h2 class="fontawesome-h-sign">&nbsp;Heading</h2>
+            <p>For heading precede the content with !</p>
+			<p>For eg</p>
+			<code>
+			!This is level one heading<br/>
+			!!This is level two heading<br/>
+			!!!This is level three heading<br/>
+			!!!!This is level four heading<br/>
+			!!!!!This is level five heading<br/>
+			!!!!!!This is level six heading<br/>
+			</code>
+        </div>
+        <div class="col-md-4">
+          <h2 class="fontawesome-list">&nbsp;List</h2>
+			<p>For list precede the content with a #</p>
+			<code>
+			# This is a level one list<br/>
+			## This is a sub list under level one list<br/>
+			## This is a sub list under level one list<br/>
+			### This is a sub list under level two list<br/>
+			### This is a sub list under level two list<br/>
+			### This is a sub list under level two list<br/>
+			## This is a sub list under level one list<br/>
+			# This is level one list item again<br/>
+			</code>
+       </div>
+        <div class="col-md-4">
+          <h2 class="fontawesome-edit">&nbsp;Misc</h2>
+			<p>For horizontal ruler just add --- in a line</p>
+			<code>
+			---
+			</code>
+			<p>For preformatted content enclose the content between {{ }} </p>
+			<code>
+			{{
+			Any content here will appear as is
+			}}
+			</code>
+        </div>
+      </div>
 
-<h2>Shortcut Keys</h2>
-<pre>
-Ctrl + b - Convert the content to formatted html.
-Ctrl + F2- Increase the font size.
-Ctrl + F3- Decrease the font size.
-Ctrl + F6- Increase the margins.
-Ctrl + F7- Decrease the margins.
-Ctrl + x - Cut.
-Ctrl + c - Copy.
-Ctrl + v - Paste.
-Ctrl + z - Undo.
-Ctrl + y - Redo.
-</pre>
+      <hr>
 
+      <footer>
+        <p>&copy; Ferose Khan J 2014</p>
+      </footer>
+    </div> <!-- /container -->
 
-<h1>Formatting</h1>
-<h2>Heading</h2>
-<p>Precede the content with !</p>
-<p>For eg</p>
-
-<pre>
-!This is level one heading
-!!This is level two heading
-!!!This is level three heading
-!!!!This is level four heading
-!!!!!This is level five heading
-!!!!!!This is level six heading
-</pre>
-
-<h2>List</h2>
-<p>Precede the content with a #</p>
-<pre>
-# This is a level one list
-## This is a sub list under level one list
-## This is a sub list under level one list
-### This is a sub list under level two list
-### This is a sub list under level two list
-### This is a sub list under level two list
-## This is a sub list under level one list
-# This is level one list item again
-</pre>
-
-<h2>Horizontal Ruler</h2>
-<p>For horizontal ruler just add --- in a line</p>
-<pre>
----
-</pre>
-
-<h2>Preformatted content</h2>
-<p>Enclose the content between {{ }} </p>
-<pre>
-{{
-Any content here will appear as is
-}}
-</pre>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+	
 </body>
 </html>
