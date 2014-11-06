@@ -150,8 +150,16 @@ function ConvertContent()
     return file.content;
 }
 function LoadData() {
-    if (typeof (Storage) !== "undefined") {
+    if ('localStorage' in window && window['localStorage'] !== null) {
         document.forms[0].onlytext.value = localStorage.getItem("onlytext.post");
+		if(localStorage.getItem("onlytext.fontSize")!=null)
+		{
+			document.getElementById("onlytext").style.fontSize = localStorage.getItem("onlytext.fontSize");
+		}
+		if(localStorage.getItem("onlytext.margin")!=null)
+		{
+			SetPadding(parseInt(localStorage.getItem("onlytext.margin"))); 
+		}
     }
     setTimeout("AutoSave()", 1000);
 }
@@ -162,8 +170,10 @@ function AutoSave()
 }
 function SaveData()
 {
-    if (typeof (Storage) !== "undefined") {
+    if('localStorage' in window && window['localStorage'] !== null) {
         localStorage.setItem("onlytext.post", document.forms[0].onlytext.value);
+        localStorage.setItem("onlytext.fontSize", document.getElementById("onlytext").style.fontSize);
+        localStorage.setItem("onlytext.margin", document.getElementById("onlytext").style.paddingLeft);
     }
 }
 function HtmlEscape(str) {
@@ -184,8 +194,7 @@ function HandleKeyBoardShortcut(e) {
         fs = parseInt(fs);
 		var s = document.getElementById("onlytext").style;
 		var padding = fs+((e.keyCode==117)?1:-1);
-		s.paddingLeft = s.paddingRight = padding + "vw";
-		s.width = (100 - padding * 2) +"vw";
+		SetPadding(padding);
     }
 	else if (e.ctrlKey && e.keyCode == 66) { // ctrl B
         var fs = document.getElementById("onlytext").style.display;
@@ -201,6 +210,12 @@ function HandleKeyBoardShortcut(e) {
             document.getElementById("onlytext").style.backgroundColor = 'white';
         }
     }
+}
+function SetPadding(padding)
+{
+	var s = document.getElementById("onlytext").style;
+	s.paddingLeft = s.paddingRight = padding + "vw";
+	s.width = (100 - padding * 2) +"vw";
 }
 </script>
 </head>
