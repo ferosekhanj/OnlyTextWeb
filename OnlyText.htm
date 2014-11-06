@@ -10,7 +10,9 @@ font-family:'Fira Mono', 'Consolas', 'Courier New', 'Courier',monospace;
 border:none;
 overflow:auto;
 height:98vh;
-
+}
+textarea:focus {
+    outline: 0;
 }
 </style>
 <script>
@@ -160,6 +162,14 @@ function LoadData() {
 		{
 			SetPadding(parseInt(localStorage.getItem("onlytext.margin"))); 
 		}
+		if(localStorage.getItem("onlytext.fg")!=null)
+		{
+			document.getElementById("onlytext").style.color = localStorage.getItem("onlytext.fg"); 
+		}
+		if(localStorage.getItem("onlytext.bg")!=null)
+		{
+			document.getElementById("onlytext").style.backgroundColor = localStorage.getItem("onlytext.bg"); 
+		}
     }
     setTimeout("AutoSave()", 1000);
 }
@@ -174,6 +184,8 @@ function SaveData()
         localStorage.setItem("onlytext.post", document.forms[0].onlytext.value);
         localStorage.setItem("onlytext.fontSize", document.getElementById("onlytext").style.fontSize);
         localStorage.setItem("onlytext.margin", document.getElementById("onlytext").style.paddingLeft);
+        localStorage.setItem("onlytext.fg", document.getElementById("onlytext").style.color);
+        localStorage.setItem("onlytext.bg", document.getElementById("onlytext").style.backgroundColor);
     }
 }
 function HtmlEscape(str) {
@@ -195,21 +207,22 @@ function HandleKeyBoardShortcut(e) {
 		var s = document.getElementById("onlytext").style;
 		var padding = fs+((e.keyCode==117)?1:-1);
 		SetPadding(padding);
-    }
-	else if (e.ctrlKey && e.keyCode == 66) { // ctrl B
+    }else if (e.ctrlKey && e.keyCode == 66) { // ctrl B
         var fs = document.getElementById("onlytext").style.display;
         if (currentContent == null) {
             currentContent = document.forms[0].onlytext.value;
             document.forms[0].onlytext.value = ConvertContent();
             document.getElementById("onlytext").readOnly = true;
-            document.getElementById("onlytext").style.backgroundColor = 'lightGray';
         } else {
             document.forms[0].onlytext.value = currentContent;
             currentContent = null;
             document.getElementById("onlytext").readOnly = false;
-            document.getElementById("onlytext").style.backgroundColor = 'white';
         }
-    }
+    }else if (e.ctrlKey && e.keyCode == 119) {
+		var body = document.getElementById("onlytext").style;
+		body.color = (body.color=="black")?"green":"black";
+		body.backgroundColor = (body.backgroundColor=="white")?"black":"white";
+	}
 }
 function SetPadding(padding)
 {
@@ -219,9 +232,9 @@ function SetPadding(padding)
 }
 </script>
 </head>
-<body style="overflow:hidden;margin:0;padding:0;" onkeyup="javascript:HandleKeyBoardShortcut(event)" onload="LoadData()">
+<body id="body" style="overflow:hidden;margin:0;padding:0;" onkeyup="javascript:HandleKeyBoardShortcut(event)" onload="LoadData()">
     <form onsubmit="return false;">
-        <textarea id="onlytext" style="font-size:12pt;width:96vw;padding-top:2vw;padding-right:2vw; padding-left:2vw;">
+        <textarea id="onlytext" style="font-size:12pt;width:96vw;padding-top:2vw;padding-right:2vw; padding-left:2vw;background-color:black;color:green;">
             Start typing your content here... Once done press ctrl+b to toggle to html.
         </textarea>
     </form>
